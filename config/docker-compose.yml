@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  minio:
+    image: minio/minio
+    command: server /data
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+
+  app:
+    build:
+      context: ./src
+    ports:
+      - "5000:5000"
+    depends_on:
+      - minio
+      - keycloak
+
+volumes:
+  minio-data:
+  keycloak-data:
