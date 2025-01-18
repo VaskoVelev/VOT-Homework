@@ -2,13 +2,14 @@ from minio import Minio
 from minio.error import S3Error
 
 class MinIOClient:
-    def __init__(self, endpoint, acces_key, secret_key, bucket_name):
+    def __init__(self, endpoint, access_key, secret_key, bucket_name):
         self.client = Minio(
-            endpoint,
-            access_key=acces_key,
+            endpoint="minio:9000",
+            access_key=access_key,
             secret_key=secret_key,
             secure=False
         )
+
         self.bucket_name = bucket_name
 
         if not self.client.bucket_exists(bucket_name):

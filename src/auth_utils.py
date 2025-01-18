@@ -6,10 +6,10 @@ def validate_jwt(func):
         auth_header = request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
             return jsonify({"error": "Missing or invalid token"}), 401
-        
+
         token = auth_header.split(' ')[1]
         try:
-            response = request.get(
+            response = requests.get(
                 "http://localhost:8080/realms/<your-realm>/protocol/openid-connect/userinfo",
                 headers={"Authorization": f"Bearer {token}"}
             )
@@ -17,6 +17,6 @@ def validate_jwt(func):
                 return jsonify({"error": "Invalid token"}), 401
         except requests.RequestException as e:
             return jsonify({"error": str(e)}), 500
-        
+
         return func(*args, **kwargs)
     return wrapper
