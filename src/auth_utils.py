@@ -10,7 +10,7 @@ def validate_jwt(func):
         token = auth_header.split(' ')[1]
         try:
             response = requests.get(
-                "http://localhost:8080/realms/<your-realm>/protocol/openid-connect/userinfo",
+                "http://keycloak:8080/realms/file-management/protocol/openid-connect/userinfo",
                 headers={"Authorization": f"Bearer {token}"}
             )
             if response.status_code != 200:
